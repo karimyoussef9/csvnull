@@ -430,7 +430,7 @@ add_shortcode( 'replace', 'replace_shortcode' );
 
 function csv_get_data_replace_content( $content ) {
     if ( strpos( $content, '[csvnull]' ) !== false ) {
-        $form = do_shortcode( '[replace]' );
+        $form = do_shortcode( '[csvnull]' );
         $content = str_replace( '[csvnull]', $form, $content );
     }
     return $content;
