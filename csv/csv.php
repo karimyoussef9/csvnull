@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: CSV Upload and Replace
- * Description: Uploads a CSV file and replaces [@] in the content with the CSV data.
+ * Description: Uploads a CSV file and replaces [csvnull] in the content with the CSV data.
  * Version: 1.0.0
  * Author: Your Name
  * Author URI: https://your-website.com/
