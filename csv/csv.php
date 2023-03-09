@@ -13,7 +13,6 @@ use function PHPSTORM_META\type;
 // add a new menu item in wordpress admin area called CSV Upload and Replace
 
 
-
 // Add a settings page to the WordPress admin area
 add_action( 'admin_menu', 'csv_upload_replace_add_menu' );
 function csv_upload_replace_add_menu() {
@@ -105,6 +104,7 @@ function csv_upload_replace_settings_page() {
         global $wpdb;
         $table_name = $wpdb->prefix . 'csv_data_table';
         foreach ($csv_data as $data) {
+           
             $wpdb->insert(
                 $table_name,
                 array(
@@ -141,7 +141,7 @@ function csv_upload_replace_settings_page() {
     echo '<h2 style = "color:red;">CSV File Instructions</h2>';
     echo '<p><b>CSV file should have the following columns in the following order:</b></p>';
     echo '<p style = "color:green;">title[1], locality[4], address[2], phone[9], cord1[10], cord2[11], link1[25], link2[26], description[27]</p>';
-     echo '<p><b> * Description: Uploads a CSV file and replaces [csvnull] in the content with the CSV data.
+    echo '<p><b> * Description: Uploads a CSV file and replaces [csvnull] in the content with the CSV data.
     </b></p>';
     echo '</div>';
   
@@ -421,36 +421,55 @@ function replace_shortcode( ) {
         $description = $result->despcription;
         $link1 = $result->link1;
         $link2 = $result->link2;
-        $form .= '<div class="csv-data" style="width: 85%;">
-                    <h3 style="margin: 0;">'.$title.'</h3> 
-                    <hr style="border: 1px solid">
-                    <div class="boxes" style="display:flex; justify-content: space-between  ;">
-                        <div class="box">
-                            <iframe class="gmap_iframe" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?q='.$cord1.','.$cord2.'&hl=es;z=14&amp;output=embed" style="height: 20rem;     width: 80%;"> </iframe>
-                        </div>
-                        <div class="box">
-                            <p><strong>Locality:</strong> ' . $locality . '</p>
-                            <p><strong>Address:</strong> ' . $address . '</p>
-                            <p><strong>Phone:</strong> ' . $phone . '</p>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="content">
-                        <p>'.$description.'</p>
-                    </div>
-                    <div class="button" style="text-align: center;">
-                        <button style="background-color: rgb(13, 157, 235) ; border: none; padding: 10px 30px; color: white; border-radius: 30px;
-                        width: 50%;">
-                        <a href="'.$link1.'">link1</a>
-                        </button>
-                    </div>
-                    <div class="button" style="text-align: center; margin-top:15px;">
-                        <button style="background-color: rgb(13, 157, 235) ; border: none; padding: 10px 30px; color: white; border-radius: 30px;
-                        width: 25%;">
-                        <a href="'.$link2.'">link2</a>
-                        </button>
-                    </div>
-                    </div>';
+      
+                    $form .= '<div class="csv-data" style="width: 85%;">';
+                    if (!empty($title)) {
+                        $form .= '<h3 style="margin: 0;">'.$title.'</h3>';
+                    }
+                    $form .= '<hr style="border: 1px solid">';
+                    $form .= '<div class="boxes" style="display:flex; justify-content: space-between  ;">';
+                    $form .= '<div class="box">';
+                    $form .= '<iframe class="gmap_iframe" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?q='.$cord1.','.$cord2.'&hl=es;z=14&amp;output=embed" style="height: 20rem;     width: 80%;"> </iframe>';
+                  $form .= '</div>';
+                    $form .= '<div class="box">';
+                    if (!empty($locality)) {
+                        $form .= '<p><strong>Locality:</strong> ' . $locality . '</p>';
+                    }
+                    if (!empty($address)) {
+                        $form .= '<p><strong>Address:</strong> ' . $address . '</p>';
+                    }
+                    if (!empty($phone)) {
+                        $form .= '<p><strong>Phone:</strong> ' . $phone . '</p>';
+                    }
+                    $form .= '</div>';
+                    $form .= '</div>';
+                    $form .= '<br>';
+                    $form .= '<div class="content">';
+                    if (!empty($description)) {
+                        $form .= '<p>'.$description.'</p>';
+                    }
+                    $form .= '</div>';
+                    $form .= '<div class="button" style="text-align: center;">';
+                    if (!empty($link1)) {
+                        $form .= '<button style="background-color: rgb(13, 157, 235) ; border: none; padding: 10px 30px; color: white; border-radius: 30px;
+                        width: 50%;">';
+                        $form .= '<a href="'.$link1.'">link1</a>';
+                        $form .= '</button>';
+                    }
+                    $form .= '</div>';
+                    $form .= '<div class="button" style="text-align: center; margin-top:15px;">';
+                    if (!empty($link2)) {
+                        $form .= '<button style="background-color: rgb(13, 157, 235) ; border: none; padding: 10px 30px; color: white; border-radius: 30px;
+                        width: 25%;">';
+                        $form .= '<a href="'.$link2.'">link2</a>';
+                        $form .= '</button>';
+                    }
+                    $form .= '</div>';
+                    $form .= '</div>';
+
+                        
+                        
+
     }
     return $form;
 }
