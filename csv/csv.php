@@ -49,6 +49,8 @@ function csv_upload_replace_settings_page() {
         if ($file['type'] !== 'text/csv') {
             echo '<div class="error"><p>Invalid file type. Please upload a CSV file.</p></div>';
         } else {
+            // display success message
+            echo '<div class="updated"><p>CSV file uploaded successfully.</p></div>';
         // get the csv file title column data
         $csv_title = array_map('str_getcsv', file($file['tmp_name']));
         $csv_title = array_column($csv_title, 0);
@@ -67,6 +69,17 @@ function csv_upload_replace_settings_page() {
         // cordin2 
         $csv_cord2 = array_map('str_getcsv', file($file['tmp_name']));
         $csv_cord2 = array_column($csv_cord2, 10);
+         // link1 
+         $csv_link1 = array_map('str_getcsv', file($file['tmp_name']));
+         $csv_link1 = array_column($csv_link1, 24);
+          // link2 
+        $csv_link2 = array_map('str_getcsv', file($file['tmp_name']));
+        $csv_link2 = array_column($csv_link2, 25);
+         // description 
+         $csv_descrip = array_map('str_getcsv', file($file['tmp_name']));
+         $csv_descrip = array_column($csv_descrip, 26);
+     
+        
         // put each row title, locality, address, phone in an array
         $csv_data = array();
         for ($i = 0; $i < count($csv_title); $i++) {
@@ -76,7 +89,11 @@ function csv_upload_replace_settings_page() {
                 'address' => $csv_address[$i],
                 'phone' => $csv_phone[$i],
                 'cordi1' => $csv_cord1[$i],
-                'cordi2' => $csv_cord2[$i]
+                'cordi2' => $csv_cord2[$i],
+                'link1' => $csv_link1[$i],
+                'link2' => $csv_link2[$i],
+                'descrip' => $csv_descrip[$i]
+
             );
             
          
@@ -109,6 +126,7 @@ function csv_upload_replace_settings_page() {
     // Display the form
     ?>
 <div class="wrap">
+    
     <h2>CSV Upload and Replace Settings</h2>
     <form method="post" enctype="multipart/form-data">
         <label for="csv-file">CSV File:</label>
@@ -116,8 +134,14 @@ function csv_upload_replace_settings_page() {
         <input type="submit" name="submit" value="Upload">
     </form>
 </div>
+
 <?php
-  
+  // display instriction on how the csv should be
+    echo '<div class="wrap">';
+    echo '<h2 style = "color:red;">CSV File Instructions</h2>';
+    echo '<p><b>CSV file should have the following columns in the following order:</b></p>';
+    echo '<p style = "color:green;">title[1], locality[4], address[2], phone[9], cord1[10], cord2[11], link1[25], link2[26], descriptin[27]</p>';
+    echo '</div>';
 }
 
 function csv_get_data_settings_page() {
@@ -165,6 +189,7 @@ function csv_get_data_settings_page() {
         if ($wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE title = '$search'") == 0 ) {
          
         } else {
+            // add % to the search to search for the title
             $results = $wpdb->get_results( "SELECT * FROM $table_name WHERE title = '$search'" );
 
             echo '<table class="wp-list-table widefat fixed striped posts" >';
