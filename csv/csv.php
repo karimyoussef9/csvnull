@@ -141,6 +141,8 @@ function csv_upload_replace_settings_page() {
     echo '<h2 style = "color:red;">CSV File Instructions</h2>';
     echo '<p><b>CSV file should have the following columns in the following order:</b></p>';
     echo '<p style = "color:green;">title[1], locality[4], address[2], phone[9], cord1[10], cord2[11], link1[25], link2[26], description[27]</p>';
+     echo '<p><b> * Description: Uploads a CSV file and replaces [csvnull] in the content with the CSV data.
+    </b></p>';
     echo '</div>';
   
 }
