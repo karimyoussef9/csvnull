@@ -108,15 +108,15 @@ function csv_upload_replace_settings_page() {
 
     // Display the form
     ?>
-    <div class="wrap">
-        <h2>CSV Upload and Replace Settings</h2>
-        <form method="post" enctype="multipart/form-data">
-            <label for="csv-file">CSV File:</label>
-            <input type="file" name="csv-file" id="csv-file">
-            <input type="submit" name="submit" value="Upload">
-        </form>
-    </div>
-    <?php
+<div class="wrap">
+    <h2>CSV Upload and Replace Settings</h2>
+    <form method="post" enctype="multipart/form-data">
+        <label for="csv-file">CSV File:</label>
+        <input type="file" name="csv-file" id="csv-file">
+        <input type="submit" name="submit" value="Upload">
+    </form>
+</div>
+<?php
   
 }
 
@@ -125,16 +125,18 @@ function csv_get_data_settings_page() {
     $table_name = $wpdb->prefix . 'csv_data_table';
     //add search to the table to search for the data by locality
     echo '<form method="post" action="?page=csv-get-data">';
-    echo '<input type="text" name="search" placeholder="Search by locality" style="width:50%; margin:15px; margin-left:0px;">';
+    echo '<input type="text" name="search" placeholder="Search by locality or title" style="width:50%; margin:15px; margin-left:0px;">';
     echo '<input type="submit" name="submit" value="Search">';
     echo '</form>';
     if (isset($_POST['search'])) {
         $search = $_POST['search'];
-        // condition check if there is result for the search
-        if ($wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE locality = '$search'") == 0) {
+        // condition check if there is result for the search or title
+
+        if ($wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE locality = '$search'") == 0 ) {
          
         } else {
             $results = $wpdb->get_results( "SELECT * FROM $table_name WHERE locality = '$search'" );
+
             echo '<table class="wp-list-table widefat fixed striped posts" >';
             echo '<thead>';
             echo '<tr>';
@@ -156,11 +158,43 @@ function csv_get_data_settings_page() {
                 echo '</tr>';
             }
             echo '</tbody>';
-            echo '</table>';    
+            echo '</table>'; 
+            
         }
+// add search by title
+        if ($wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE title = '$search'") == 0 ) {
+         
+        } else {
+            $results = $wpdb->get_results( "SELECT * FROM $table_name WHERE title = '$search'" );
 
+            echo '<table class="wp-list-table widefat fixed striped posts" >';
+            echo '<thead>';
+            echo '<tr>';
+            echo '<th class="manage-column column-title column-primary">Title</th>';
+            echo '<th class="manage-column column-title column-primary">Locality</th>';
+            echo '<th class="manage-column column-title column-primary">Address</th>';
+            echo '<th class="manage-column column-title column-primary">Phone</th>';
+            echo '<th class="manage-column column-title column-primary">Actions</th>';
+            echo '</tr>';
+            echo '</thead>';
+            echo '<tbody>';
+            foreach ($results as $result) {
+                echo '<tr>';
+                echo '<td class="manage-column column-title column-primary">' . $result->title . '</td>';
+                echo '<td class="manage-column column-title column-primary">' . $result->locality . '</td>';
+                echo '<td class="manage-column column-title column-primary">' . $result->address . '</td>';
+                echo '<td class="manage-column column-title column-primary">' . $result->phone . '</td>';
+                echo '<td class="manage-column column-title column-primary"><a href="?page=csv-get-data&action=edit&id=' . $result->id . '">Edit</a> <a href="?page=csv-get-data&action=delete&id=' . $result->id . '">Delete</a></td>';
+                echo '</tr>';
+            }
+            echo '</tbody>';
+            echo '</table>'; 
+            
+        }
        
-    }else{
+    }
+    
+    else{
              
 // make pagination
     $page = isset($_GET['cpage']) ? abs((int)$_GET['cpage' ]) : 1;
@@ -235,70 +269,81 @@ if (isset($_GET['action']) && $_GET['action'] === 'edit') {
         $description = $result->despcription;
     }
     ?>
-    <div class="" style="position:fixed; height: 50vh; height: 95%; top: 5%; padding: 20px; background-color:#f6f7f7; "  >
-        <h2 style="color: black;">Edit Data</h2>
-        <a href="?page=csv-get-data" style="position: absolute; top: 20px; right: 12%; color: black; font-size: 20px; text-decoration: none;">X</a>
+<div class="" style="position:fixed; height: 50vh; height: 95%; top: 5%; padding: 20px; background-color:#f6f7f7; ">
+    <h2 style="color: black;">Edit Data</h2>
+    <a href="?page=csv-get-data"
+        style="position: absolute; top: 20px; right: 12%; color: black; font-size: 20px; text-decoration: none;">X</a>
 
-        <form method="post" style="color: black; display: flex; justify-content: space-between; flex-wrap: wrap; " action="?page=csv-get-data&action=update&id=<?php echo $id; ?>">
-            <div class="box1" style="flex-basis: 50%;">
-                <div class="box" style="padding-bottom: 15px;">
-                    <label for="title" >Title:</label>
-                    <br>
-                    <input type="text" name="title" style=" margin-top: 5px; width: 80%;" id="title" value="<?php echo $title; ?>">
-                </div>
-                <div class="box" style="padding-bottom: 15px;">
-                    <label for="locality" >Locality:</label>
-                    <br>
-                    <input type="text" name="locality" style=" margin-top: 5px; width: 80%;" id="locality" value="<?php echo $locality; ?>">
-                </div>
-                <div class="box" style="padding-bottom: 15px;">
-                    <label for="address" >Address:</label>
-                    <br>
-                    <input type="text" name="address" style=" margin-top: 5px; width: 80%;" id="address" value="<?php echo $address; ?>">
-                </div>
-                <div class="box" style="padding-bottom: 15px;">
-                    <label for="link1" >Link1:</label>
-                    <br>
-                    <input type="text" name="link1" style=" margin-top: 5px; width: 80%;" id="cordi2" value="<?php echo $link1; ?>">
-                </div>
-            </div>
-            <div class="box2" style="flex-basis: 50%;">
-                <div class="box" style="padding-bottom: 15px;">
-                    <label for="phone" >Phone:</label>
-                    <br>
-                    <input type="text" name="phone" style=" margin-top: 5px; width: 80%;" id="phone" value="<?php echo $phone; ?>">
-                </div>
-                <div class="box" style="padding-bottom: 15px;">
-                    <label for="cordi1" >Cordi1:</label>
-                    <br>
-                    <input type="text" name="cordi1" style=" margin-top: 5px; width: 80%;" id="cordi1" value="<?php echo $cord1; ?>">
-                </div>
-                <div class="box" style="padding-bottom: 15px;">
-                    <label for="cordi2" >Cordi2:</label>
-                    <br>
-                    <input type="text" name="cordi2" style=" margin-top: 5px; width: 80%;" id="cordi2" value="<?php echo $cord2; ?>">
-                </div>
-                
-                <div class="box" style="padding-bottom: 15px;">
-                    <label for="link2" >Link2:</label>
-                    <br>
-                    <input type="text" name="link2" style=" margin-top: 5px; width: 80%;" id="cordi2" value="<?php echo $link2; ?>">
-                </div>
-            </div>
-            <div class="box3" style="flex-basis: 100%;">
+    <form method="post" style="color: black; display: flex; justify-content: space-between; flex-wrap: wrap; "
+        action="?page=csv-get-data&action=update&id=<?php echo $id; ?>">
+        <div class="box1" style="flex-basis: 50%;">
             <div class="box" style="padding-bottom: 15px;">
-                    <label for="description" >Description:</label>
-                    <br>
-                    <textarea name="description" id="" cols="95" rows="5" ><?php echo $description?></textarea>
-                </div>
+                <label for="title">Title:</label>
+                <br>
+                <input type="text" name="title" style=" margin-top: 5px; width: 80%;" id="title"
+                    value="<?php echo $title; ?>">
             </div>
-            <br>
-          
-          <input type="submit" name="submit" value="Update" style="background-color: rgb(13, 157, 235) ; border: none; padding: 10px 30px; color: white; border-radius: 5px;" >
-        </form>
-        
-    </div>
-    <?php
+            <div class="box" style="padding-bottom: 15px;">
+                <label for="locality">Locality:</label>
+                <br>
+                <input type="text" name="locality" style=" margin-top: 5px; width: 80%;" id="locality"
+                    value="<?php echo $locality; ?>">
+            </div>
+            <div class="box" style="padding-bottom: 15px;">
+                <label for="address">Address:</label>
+                <br>
+                <input type="text" name="address" style=" margin-top: 5px; width: 80%;" id="address"
+                    value="<?php echo $address; ?>">
+            </div>
+            <div class="box" style="padding-bottom: 15px;">
+                <label for="link1">Link1:</label>
+                <br>
+                <input type="text" name="link1" style=" margin-top: 5px; width: 80%;" id="cordi2"
+                    value="<?php echo $link1; ?>">
+            </div>
+        </div>
+        <div class="box2" style="flex-basis: 50%;">
+            <div class="box" style="padding-bottom: 15px;">
+                <label for="phone">Phone:</label>
+                <br>
+                <input type="text" name="phone" style=" margin-top: 5px; width: 80%;" id="phone"
+                    value="<?php echo $phone; ?>">
+            </div>
+            <div class="box" style="padding-bottom: 15px;">
+                <label for="cordi1">Cordi1:</label>
+                <br>
+                <input type="text" name="cordi1" style=" margin-top: 5px; width: 80%;" id="cordi1"
+                    value="<?php echo $cord1; ?>">
+            </div>
+            <div class="box" style="padding-bottom: 15px;">
+                <label for="cordi2">Cordi2:</label>
+                <br>
+                <input type="text" name="cordi2" style=" margin-top: 5px; width: 80%;" id="cordi2"
+                    value="<?php echo $cord2; ?>">
+            </div>
+
+            <div class="box" style="padding-bottom: 15px;">
+                <label for="link2">Link2:</label>
+                <br>
+                <input type="text" name="link2" style=" margin-top: 5px; width: 80%;" id="cordi2"
+                    value="<?php echo $link2; ?>">
+            </div>
+        </div>
+        <div class="box3" style="flex-basis: 100%;">
+            <div class="box" style="padding-bottom: 15px;">
+                <label for="description">Description:</label>
+                <br>
+                <textarea name="description" id="" cols="95" rows="5"><?php echo $description?></textarea>
+            </div>
+        </div>
+        <br>
+
+        <input type="submit" name="submit" value="Update"
+            style="background-color: rgb(13, 157, 235) ; border: none; padding: 10px 30px; color: white; border-radius: 5px;">
+    </form>
+
+</div>
+<?php
     // if the action is update then update the data in the database and if there is a change in the data then update the data
 
 } elseif (isset($_GET['action']) && $_GET['action'] === 'update') {
@@ -395,4 +440,3 @@ add_filter( 'the_content', 'csv_get_data_replace_content' );
 
 ?>
 
-<?php
