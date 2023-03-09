@@ -429,7 +429,11 @@ function replace_shortcode( ) {
                     $form .= '<hr style="border: 1px solid">';
                     $form .= '<div class="boxes" style="display:flex; justify-content: space-between  ;">';
                     $form .= '<div class="box">';
-                    $form .= '<iframe class="gmap_iframe" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?q='.$cord1.','.$cord2.'&hl=es;z=14&amp;output=embed" style="height: 20rem;     width: 80%;"> </iframe>';
+                    if(!empty($cord1) && !empty($cord2)){
+
+                        $form .= '<iframe class="gmap_iframe" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?q='.$cord1.','.$cord2.'&hl=es;z=14&amp;output=embed" style="height: 20rem;     width: 80%;"> </iframe>';
+
+                    }
                   $form .= '</div>';
                     $form .= '<div class="box">';
                     if (!empty($locality)) {
