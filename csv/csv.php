@@ -36,6 +36,7 @@ $sql = "CREATE TABLE $table_name (
     link1 text null,
     link2 text null,
     despcription text null,
+    hour text null,
     UNIQUE KEY id (id)
 ) $charset_collate;";
 require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -48,35 +49,76 @@ function csv_upload_replace_settings_page() {
         if ($file['type'] !== 'text/csv') {
             echo '<div class="error"><p>Invalid file type. Please upload a CSV file.</p></div>';
         } else {
+            $www = array_map('str_getcsv', file($file['tmp_name']));
+            $fields = $www[0];
+            // get the index of Nombre in the array $fields
+            $title_index = array_search('Nombre', $fields);
+              // get the index of Nombre in the array $fields
+              $locality_index = array_search('Localidad', $fields);
+                // get the index of Nombre in the array $fields
+            $address_index = array_search('Dirección', $fields);
+              // get the index of Nombre in the array $fields
+              $phone_index = array_search('Teléfono', $fields);
+                // get the index of Nombre in the array $fields
+            $cord1_index = array_search('Coordenadas 1', $fields);
+              // get the index of Nombre in the array $fields
+              $cord2_index = array_search('Coordenadas 2', $fields);
+                // get the index of Nombre in the array $fields
+            $link1_index = array_search('link1', $fields);
+              // get the index of Nombre in the array $fields
+              $link2_index = array_search('link2', $fields);
+                // get the index of Nombre in the array $fields
+            $desc_index = array_search('desc', $fields);
+                // get the index of Nombre in the array $fields
+                $hours_index = array_search('hours', $fields);
+
+            
             // display success message
             echo '<div class="updated"><p>CSV file uploaded successfully.</p></div>';
         // get the csv file title column data
         $csv_title = array_map('str_getcsv', file($file['tmp_name']));
-        $csv_title = array_column($csv_title, 0);
+        $csv_title = array_column($csv_title, $title_index);
         // get the csv file locality column data
         $csv_locality = array_map('str_getcsv', file($file['tmp_name']));
-        $csv_locality = array_column($csv_locality, 3);
+        $csv_locality = array_column($csv_locality, $locality_index);
         // get the csv file third address data
         $csv_address = array_map('str_getcsv', file($file['tmp_name']));
-        $csv_address = array_column($csv_address, 1);
+        $csv_address = array_column($csv_address, $address_index);
         // get the csv file fourth phone data
         $csv_phone = array_map('str_getcsv', file($file['tmp_name']));
-        $csv_phone = array_column($csv_phone, 8);
+        $csv_phone = array_column($csv_phone, $phone_index);
         // cordin1
         $csv_cord1 = array_map('str_getcsv', file($file['tmp_name']));
-        $csv_cord1 = array_column($csv_cord1, 9);
+        $csv_cord1 = array_column($csv_cord1, $cord1_index);
         // cordin2 
         $csv_cord2 = array_map('str_getcsv', file($file['tmp_name']));
-        $csv_cord2 = array_column($csv_cord2, 10);
+        $csv_cord2 = array_column($csv_cord2, $cord2_index);
          // link1 
-         $csv_link1 = array_map('str_getcsv', file($file['tmp_name']));
-         $csv_link1 = array_column($csv_link1, 24);
-          // link2 
-        $csv_link2 = array_map('str_getcsv', file($file['tmp_name']));
-        $csv_link2 = array_column($csv_link2, 25);
+         if($link1_index != null){
+            $csv_link1 = array_map('str_getcsv', file($file['tmp_name']));
+            $csv_link1 = array_column($csv_link1, $link1_index);
+         }
+         
+          // link2
+            if($link2_index != null){ 
+                $csv_link2 = array_map('str_getcsv', file($file['tmp_name']));
+                $csv_link2 = array_column($csv_link2, $link2_index);
+            }
+  
+    
          // description 
-         $csv_descrip = array_map('str_getcsv', file($file['tmp_name']));
-         $csv_descrip = array_column($csv_descrip, 26);
+         if($desc_index != null){
+            $csv_descrip = array_map('str_getcsv', file($file['tmp_name']));
+            $csv_descrip = array_column($csv_descrip, $desc_index);
+        }
+       
+            
+            // hours 
+            if($hours_index != null){
+                $csv_hours = array_map('str_getcsv', file($file['tmp_name']));
+                $csv_hours = array_column($csv_hours, $hours_index);
+            }
+          
      
         
         // put each row title, locality, address, phone in an array
@@ -91,7 +133,8 @@ function csv_upload_replace_settings_page() {
                 'cordi2' => $csv_cord2[$i],
                 'link1' => $csv_link1[$i],
                 'link2' => $csv_link2[$i],
-                'descrip' => $csv_descrip[$i]
+                'descrip' => $csv_descrip[$i],
+                'hour' => $csv_hours[$i]
 
             );
             
@@ -125,25 +168,18 @@ function csv_upload_replace_settings_page() {
 
     // Display the form
     ?>
-<div class="wrap">
-    
-    <h2>CSV Upload and Replace Settings</h2>
-    <form method="post" enctype="multipart/form-data">
-        <label for="csv-file">CSV File:</label>
-        <input type="file" name="csv-file" id="csv-file">
-        <input type="submit" name="submit" value="Upload">
-    </form>
+<div style="margin: 20px auto; max-width: 500px; padding: 20px; border: 1px solid #ccc; border-radius: 5px;">
+  <h2 style="font-size: 24px; margin-bottom: 20px;">CSV Upload and Replace Settings</h2>
+  <form method="post" enctype="multipart/form-data" style="display: flex; flex-direction: column;">
+    <label for="csv-file" style="margin-bottom: 10px;">CSV File:</label>
+    <input type="file" name="csv-file" id="csv-file" style="padding: 10px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px;">
+    <input type="submit" name="submit" value="Upload" style="padding: 10px; background-color: #4CAF50; color: #fff; border: none; border-radius: 5px; cursor: pointer;">
+  </form>
 </div>
 
+
 <?php
-  // display instriction on how the csv should be
-    echo '<div class="wrap">';
-    echo '<h2 style = "color:red;">CSV File Instructions</h2>';
-    echo '<p><b>CSV file should have the following columns in the following order:</b></p>';
-    echo '<p style = "color:green;">title[1], locality[4], address[2], phone[9], cord1[10], cord2[11], link1[25], link2[26], description[27]</p>';
-    echo '<p><b> * Description: Uploads a CSV file and replaces [csvnull] in the content with the CSV data.
-    </b></p>';
-    echo '</div>';
+ 
   
 }
 
