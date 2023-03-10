@@ -450,6 +450,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'edit') {
     $description = $_POST['description'];
     $link1 = $_POST['link1'];
     $link2 = $_POST['link2'];
+    $hours = $_POST['hours'];
     $wpdb->update( $table_name, array(
         'title' => $title,
         'locality' => $locality,
@@ -460,6 +461,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'edit') {
         'despcription' => $description,
         'link1' => $link1,
         'link2' => $link2,
+        'hour' => $hours,
+
     ), array( 'id' => $id ) );
 }
 // button to add the data in the database
