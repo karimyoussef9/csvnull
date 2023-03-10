@@ -185,16 +185,20 @@ function csv_upload_replace_settings_page() {
     <input type="submit" name="submit" value="Upload" style="padding: 10px; background-color: #4CAF50; color: #fff; border: none; border-radius: 5px; cursor: pointer;">
   </form>
 </div>
-<!-- Link to show the pop-up -->
-<a href="#" onclick="document.getElementById('popup').style.display='block'; return false;">Show Instructions</a>
 
-<!-- Pop-up with instructions -->
-<div id="popup" style="display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5);">
-  <div style="background-color: #fefefe; margin: 10% auto; padding: 20px; border: 1px solid #888; width: 200px;">
-    <span style="color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer;" onclick="document.getElementById('popup').style.display='none'">&times;</span>
-    <p style="margin-bottom: 0;">colomns names : Nombre , Localidad , Dirección , Teléfono , Coordenadas 1 , Coordenadas 2 , link1 , link2 , desc , hours </p>
-  </div>
-</div>
+<p style="font-size: 16px; font-weight: bold; margin-bottom: 5px;">Column Names:</p>
+<p style="font-size: 14px; line-height: 1.4; margin-bottom: 20px;">
+  <span style="display: inline-block; width: 100px;">Nombre</span>
+  <span style="display: inline-block; width: 100px;">Localidad</span>
+  <span style="display: inline-block; width: 100px;">Dirección</span>
+  <span style="display: inline-block; width: 100px;">Teléfono</span>
+  <span style="display: inline-block; width: 120px;">Coordenadas 1</span>
+  <span style="display: inline-block; width: 120px;">Coordenadas 2</span>
+  <span style="display: inline-block; width: 80px;">link1</span>
+  <span style="display: inline-block; width: 80px;">link2</span>
+  <span style="display: inline-block; width: 80px;">desc</span>
+  <span style="display: inline-block; width: 80px;">hours</span>
+</p>
 
 
 <?php
