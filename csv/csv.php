@@ -467,8 +467,8 @@ function replace_shortcode( ) {
         $locality = $result->locality;
         $address = $result->address;
         $phone = $result->phone;
-        $cord1 = $result->cord1;
-        $cord2 = $result->cord2;
+        $cord1 = $result->cordi1;
+        $cord2 = $result->cordi2;
         $description = $result->despcription;
         $link1 = $result->link1;
         $link2 = $result->link2;
