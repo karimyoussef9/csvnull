@@ -31,12 +31,13 @@ $sql = "CREATE TABLE $table_name (
     locality text NOT NULL,
     address text NOT NULL,
     phone text NOT NULL,
-   cordi1 decimal(11,8) NOT NULL,
+    cordi1 decimal(11,8) NOT NULL,
     cordi2 decimal(11,8) NOT NULL,
     link1 text null,
     link2 text null,
     despcription text null,
     hour text null,
+    Provincia text null,
     UNIQUE KEY id (id)
 ) $charset_collate;";
 require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -54,77 +55,126 @@ function csv_upload_replace_settings_page() {
             // get the index of Nombre in the array $fields
             $title_index = array_search('Nombre', $fields);
             
-              // get the index of Nombre in the array $fields
-              $locality_index = array_search('Localidad', $fields);
-                // get the index of Nombre in the array $fields
+            // get the index of Nombre in the array $fields
+            $locality_index = array_search('Localidad', $fields);
+            // get the index of Nombre in the array $fields
             $address_index = array_search('Dirección', $fields);
-              // get the index of Nombre in the array $fields
-              $phone_index = array_search('Teléfono', $fields);
-                // get the index of Nombre in the array $fields
+            // get the index of Nombre in the array $fields
+            $phone_index = array_search('Teléfono', $fields);
+            // get the index of Nombre in the array $fields
             $cord1_index = array_search('Coordenadas 1', $fields);
-              // get the index of Nombre in the array $fields
-              $cord2_index = array_search('Coordenadas 2', $fields);
-                // get the index of Nombre in the array $fields
+            // get the index of Nombre in the array $fields
+            $cord2_index = array_search('Coordenadas 2', $fields);
+            // get the index of Nombre in the array $fields
             $link1_index = array_search('link1', $fields);
-              // get the index of Nombre in the array $fields
-              $link2_index = array_search('link2', $fields);
-                // get the index of Nombre in the array $fields
+            // get the index of Nombre in the array $fields
+            $link2_index = array_search('link2', $fields);
+            // get the index of Nombre in the array $fields
             $desc_index = array_search('desc', $fields);
-                // get the index of Nombre in the array $fields
-                $hours_index = array_search('hours', $fields);
-
+            // get the index of Nombre in the array $fields
+            $hours_index = array_search('hours', $fields);
+$Provincia_index = array_search('Provincia', $fields);
             
             // display success message
             echo '<div class="updated"><p>CSV file uploaded successfully.</p></div>';
-        // get the csv file title column data
-        $csv_title = array_map('str_getcsv', file($file['tmp_name']));
-        $csv_title = array_column($csv_title, $title_index);
-        // get the csv file locality column data
-        $csv_locality = array_map('str_getcsv', file($file['tmp_name']));
-        $csv_locality = array_column($csv_locality, $locality_index);
-        // get the csv file third address data
-        $csv_address = array_map('str_getcsv', file($file['tmp_name']));
-        $csv_address = array_column($csv_address, $address_index);
-        // get the csv file fourth phone data
-        $csv_phone = array_map('str_getcsv', file($file['tmp_name']));
-        $csv_phone = array_column($csv_phone, $phone_index);
-        // cordin1
-        $csv_cord1 = array_map('str_getcsv', file($file['tmp_name']));
-        $csv_cord1 = array_column($csv_cord1, $cord1_index);
-        // cordin2 
-        $csv_cord2 = array_map('str_getcsv', file($file['tmp_name']));
-        $csv_cord2 = array_column($csv_cord2, $cord2_index);
-         // link1 
-         if($link1_index != null){
-            $csv_link1 = array_map('str_getcsv', file($file['tmp_name']));
-            $csv_link1 = array_column($csv_link1, $link1_index);
-         }
-         
-          // link2
+            // get the csv file title column data
+            $csv_title = array_map('str_getcsv', file($file['tmp_name']));
+            $csv_title = array_column($csv_title, $title_index);
+            // get the csv file locality column data
+            $csv_locality = array_map('str_getcsv', file($file['tmp_name']));
+            $csv_locality = array_column($csv_locality, $locality_index);
+            // get the csv file third address data
+            $csv_address = array_map('str_getcsv', file($file['tmp_name']));
+            $csv_address = array_column($csv_address, $address_index);
+            // get the csv file fourth phone data
+            $csv_phone = array_map('str_getcsv', file($file['tmp_name']));
+            $csv_phone = array_column($csv_phone, $phone_index);
+            // cordin1
+            $csv_cord1 = array_map('str_getcsv', file($file['tmp_name']));
+            $csv_cord1 = array_column($csv_cord1, $cord1_index);
+            // cordin2 
+            $csv_cord2 = array_map('str_getcsv', file($file['tmp_name']));
+            $csv_cord2 = array_column($csv_cord2, $cord2_index);
+            // link1 
+            if($link1_index != null){
+                $csv_link1 = array_map('str_getcsv', file($file['tmp_name']));
+                $csv_link1 = array_column($csv_link1, $link1_index);
+            }
+            // link2
             if($link2_index != null){ 
                 $csv_link2 = array_map('str_getcsv', file($file['tmp_name']));
                 $csv_link2 = array_column($csv_link2, $link2_index);
             }
-  
-    
-         // description 
-         if($desc_index != null){
-            $csv_descrip = array_map('str_getcsv', file($file['tmp_name']));
-            $csv_descrip = array_column($csv_descrip, $desc_index);
-        }
-       
-            
+            // description 
+            if($desc_index != null){
+                $csv_descrip = array_map('str_getcsv', file($file['tmp_name']));
+                $csv_descrip = array_column($csv_descrip, $desc_index);
+            }
+           
             // hours 
             if($hours_index != null){
                 $csv_hours = array_map('str_getcsv', file($file['tmp_name']));
                 $csv_hours = array_column($csv_hours, $hours_index);
             }
+            if($Provincia_index != null){
+                $csv_Provincia = array_map('str_getcsv', file($file['tmp_name']));
+                $csv_Provincia = array_column($csv_Provincia, $Provincia_index);
+            }
+            
+           
+            
           
      
         
         // put each row title, locality, address, phone in an array
         $csv_data = array();
         for ($i = 0; $i < count($csv_title); $i++) {
+            if(!isset($csv_title[$i])){
+                $csv_title[$i] = null;
+    
+            }        
+            if(!isset($csv_locality[$i])){
+                $csv_locality[$i] = null;
+    
+            }
+            if(!isset($csv_address[$i])){
+                $csv_address[$i] = null;
+    
+            }
+            if(!isset($csv_phone[$i])){
+                $csv_phone[$i] = null;
+    
+            }
+            if(!isset($csv_cord1[$i])){
+                $csv_cord1[$i] = null;
+    
+            }
+            if(!isset($csv_cord2[$i])){
+                $csv_cord2[$i] = null;
+    
+            }
+
+            if(!isset($csv_hours[$i])){
+                $csv_hours[$i] = null;
+    
+            }
+            if(!isset($csv_link1[$i])){
+                $csv_link1[$i] = null;
+    
+            }
+            if(!isset($csv_link2[$i])){
+                $csv_link2[$i] = null;
+    
+            }
+            if(!isset($csv_descrip[$i])){
+                $csv_descrip[$i] = null;
+    
+            }
+            if(!isset($csv_Provincia[$i])){
+                $csv_Provincia[$i] = null;
+    
+            }
+
             $csv_data[$i] = array(
                 'title' => $csv_title[$i],
                 'locality' => $csv_locality[$i],
@@ -135,8 +185,8 @@ function csv_upload_replace_settings_page() {
                 'link1' => $csv_link1[$i],
                 'link2' => $csv_link2[$i],
                 'descrip' => $csv_descrip[$i],
-                'hour' => $csv_hours[$i]
-
+                'hour' => $csv_hours[$i],
+                'Provincia' => $csv_Provincia[$i]
             );
             
          
@@ -161,18 +211,13 @@ function csv_upload_replace_settings_page() {
                     'link1' => $data['link1'],
                     'link2' => $data['link2'],
                     'despcription' => $data['descrip'],
-                    'hour' => $data['hour']
-
-                   
-                    
+                    'hour' => $data['hour'],
+                'Provincia' => $data['Provincia']
                 )
             );
-
-
         }
         }
-    }else{
-    } 
+    }
 
     // Display the form
     ?>
@@ -185,6 +230,7 @@ function csv_upload_replace_settings_page() {
   </form>
 </div>
 
+<p style="font-size: 16px; font-weight: bold; margin-bottom: 5px;">ShortCode: [csvnull]</p>
 <p style="font-size: 16px; font-weight: bold; margin-bottom: 5px;">Column Names:</p>
 <p style="font-size: 14px; line-height: 1.4; margin-bottom: 20px;">
   <span style="display: inline-block; width: 100px;">Nombre</span>
@@ -197,6 +243,7 @@ function csv_upload_replace_settings_page() {
   <span style="display: inline-block; width: 80px;">link2</span>
   <span style="display: inline-block; width: 80px;">desc</span>
   <span style="display: inline-block; width: 80px;">hours</span>
+    <span style="display: inline-block; width: 80px;">Provincia</span>
 </p>
 
 
@@ -354,6 +401,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'edit') {
         $link2 = $result->link2;
         $description = $result->despcription;
         $hours = $result->hour;
+        $Provincia = $result->Provincia;
     }
     ?>
 <div class="" style="position:fixed; height: 50vh; height: 95%; top: 5%; padding: 20px; background-color:#f6f7f7; ">
@@ -388,6 +436,12 @@ if (isset($_GET['action']) && $_GET['action'] === 'edit') {
                 <input type="text" name="link1" style=" margin-top: 5px; width: 80%;" id="cordi2"
                     value="<?php echo $link1; ?>">
             </div>
+            <div class="box" style="padding-bottom: 15px;">
+                <label for="Provincia">Provincia:</label>
+                <br>
+                <input type="text" name="Provincia" style=" margin-top: 5px; width: 80%;" id="cordi2"
+                    value="<?php echo $Provincia; ?>">
+            </div>
         </div>
         <div class="box2" style="flex-basis: 50%;">
             <div class="box" style="padding-bottom: 15px;">
@@ -421,6 +475,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'edit') {
                 <input type="text" name="hours" style=" margin-top: 5px; width: 80%;" id="cordi2"
                     value="<?php echo $hours; ?>">
             </div>
+            
         </div>
         <div class="box3" style="flex-basis: 100%;">
             <div class="box" style="padding-bottom: 15px;">
@@ -451,6 +506,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'edit') {
     $link1 = $_POST['link1'];
     $link2 = $_POST['link2'];
     $hours = $_POST['hours'];
+    $Provincia = $_POST['Provincia'];
     $wpdb->update( $table_name, array(
         'title' => $title,
         'locality' => $locality,
@@ -462,13 +518,11 @@ if (isset($_GET['action']) && $_GET['action'] === 'edit') {
         'link1' => $link1,
         'link2' => $link2,
         'hour' => $hours,
+        'Provincia' => $Provincia,
 
     ), array( 'id' => $id ) );
 }
 // button to add the data in the database
-
-
-
 
 }
 
@@ -490,6 +544,7 @@ function replace_shortcode( ) {
         $link1 = $result->link1;
         $link2 = $result->link2;
         $hours = $result->hour;
+        $Provincia = $result->Provincia;
       
                     $form .= '<div class="csv-data" style="width: 85%;">';
                     if (!empty($title)) {
@@ -516,6 +571,9 @@ function replace_shortcode( ) {
                     }
                     if (!empty($phone)) {
                         $form .= '<p><strong>hours:</strong> ' . $hours . '</p>';
+                    }
+                    if (!empty($Provincia)) {
+                        $form .= '<p><strong>Provincia:</strong> ' . $Provincia . '</p>';
                     }
                     $form .= '</div>';
                     $form .= '</div>';
@@ -560,6 +618,15 @@ function csv_get_data_replace_content( $content ) {
 }
 add_filter( 'the_content', 'csv_get_data_replace_content' );
 
+// delete everything happend by this plugin when the plugin is deleted
+function csv_delete_plugin() {
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'csv_data_table';
+    $sql = "DROP TABLE IF EXISTS $table_name";
+    $wpdb->query( $sql );
+    delete_option( "csv_db_version" );
+}
+register_uninstall_hook( __FILE__, 'csv_delete_plugin' );
 
 ?>
 
