@@ -472,6 +472,7 @@ function replace_shortcode( ) {
         $description = $result->despcription;
         $link1 = $result->link1;
         $link2 = $result->link2;
+        $hours = $result->hour;
       
                     $form .= '<div class="csv-data" style="width: 85%;">';
                     if (!empty($title)) {
@@ -495,6 +496,9 @@ function replace_shortcode( ) {
                     }
                     if (!empty($phone)) {
                         $form .= '<p><strong>Phone:</strong> ' . $phone . '</p>';
+                    }
+                    if (!empty($phone)) {
+                        $form .= '<p><strong>hours:</strong> ' . $hours . '</p>';
                     }
                     $form .= '</div>';
                     $form .= '</div>';
