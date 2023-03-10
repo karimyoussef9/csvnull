@@ -72,7 +72,6 @@ function csv_upload_replace_settings_page() {
             $desc_index = array_search('desc', $fields);
                 // get the index of Nombre in the array $fields
                 $hours_index = array_search('hours', $fields);
-                print_r($hours_index);
 
             
             // display success message
