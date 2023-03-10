@@ -71,6 +71,7 @@ function csv_upload_replace_settings_page() {
             $desc_index = array_search('desc', $fields);
                 // get the index of Nombre in the array $fields
                 $hours_index = array_search('hours', $fields);
+                print_r($hours_index);
 
             
             // display success message
@@ -156,7 +157,14 @@ function csv_upload_replace_settings_page() {
                     'address' => $data['address'],
                     'phone' => $data['phone'],
                     'cordi1' => $data['cordi1'],
-                    'cordi2' => $data['cordi2']
+                    'cordi2' => $data['cordi2'],
+                    'link1' => $data['link1'],
+                    'link2' => $data['link2'],
+                    'despcription' => $data['descrip'],
+                    'hour' => $data['hour']
+
+                   
+                    
                 )
             );
 
@@ -331,6 +339,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'edit') {
         $link1 = $result->link1;
         $link2 = $result->link2;
         $description = $result->despcription;
+        $hours = $result->hour;
     }
     ?>
 <div class="" style="position:fixed; height: 50vh; height: 95%; top: 5%; padding: 20px; background-color:#f6f7f7; ">
@@ -391,6 +400,12 @@ if (isset($_GET['action']) && $_GET['action'] === 'edit') {
                 <br>
                 <input type="text" name="link2" style=" margin-top: 5px; width: 80%;" id="cordi2"
                     value="<?php echo $link2; ?>">
+            </div>
+            <div class="box" style="padding-bottom: 15px;">
+                <label for="hours">hours:</label>
+                <br>
+                <input type="text" name="hours" style=" margin-top: 5px; width: 80%;" id="cordi2"
+                    value="<?php echo $hours; ?>">
             </div>
         </div>
         <div class="box3" style="flex-basis: 100%;">
