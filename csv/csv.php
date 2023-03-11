@@ -54,8 +54,7 @@ function csv_upload_replace_settings_page() {
             $fields = $www[0];
             // get the index of Nombre in the array $fields
             $title_index = array_search('Nombre', $fields);
-            
-            // get the index of Nombre in the array $fields
+            // get the index of locality in the array $fields
             $locality_index = array_search('Localidad', $fields);
             // get the index of Nombre in the array $fields
             $address_index = array_search('Dirección', $fields);
@@ -73,7 +72,7 @@ function csv_upload_replace_settings_page() {
             $desc_index = array_search('desc', $fields);
             // get the index of Nombre in the array $fields
             $hours_index = array_search('hours', $fields);
-$Provincia_index = array_search('Provincia', $fields);
+            $Provincia_index = array_search('Provincia', $fields);
             
             // display success message
             echo '<div class="updated"><p>CSV file uploaded successfully.</p></div>';
@@ -198,23 +197,34 @@ $Provincia_index = array_search('Provincia', $fields);
         global $wpdb;
         $table_name = $wpdb->prefix . 'csv_data_table';
         foreach ($csv_data as $data) {
-           
-            $wpdb->insert(
-                $table_name,
-                array(
-                    'title' => $data['title'],
-                    'locality' => $data['locality'],
-                    'address' => $data['address'],
-                    'phone' => $data['phone'],
-                    'cordi1' => $data['cordi1'],
-                    'cordi2' => $data['cordi2'],
-                    'link1' => $data['link1'],
-                    'link2' => $data['link2'],
-                    'despcription' => $data['descrip'],
-                    'hour' => $data['hour'],
-                'Provincia' => $data['Provincia']
-                )
-            );
+            $title = $data['title'];
+            $title_escaped = addslashes($title); // escape the single quote
+            $locality = $data['locality'];
+            $locality_escaped = addslashes($locality); // escape the single quote
+           $rows = $wpdb->get_results("SELECT * FROM $table_name WHERE title = '$title_escaped' And locality = '$locality_escaped'");
+            // if theres rows with the same title and locality then dont insert it
+            
+            if (count($rows) == 0) {
+                $wpdb->insert(
+                    $table_name,
+                    array(
+                        'title' => $data['title'],
+                        'locality' => $data['locality'],
+                        'address' => $data['address'],
+                        'phone' => $data['phone'],
+                        'cordi1' => $data['cordi1'],
+                        'cordi2' => $data['cordi2'],
+                        'link1' => $data['link1'],
+                        'link2' => $data['link2'],
+                        'despcription' => $data['descrip'],
+                        'hour' => $data['hour'],
+                    'Provincia' => $data['Provincia']
+                    )
+                );
+            }
+
+            
+          
         }
         }
     }
@@ -230,7 +240,7 @@ $Provincia_index = array_search('Provincia', $fields);
   </form>
 </div>
 
-<p style="font-size: 16px; font-weight: bold; margin-bottom: 5px;">ShortCode: [csvnull]</p>
+<p style="font-size: 16px; font-weight: bold; margin-bottom: 5px;">ShortCode: [Locality]</p>
 <p style="font-size: 16px; font-weight: bold; margin-bottom: 5px;">Column Names:</p>
 <p style="font-size: 14px; line-height: 1.4; margin-bottom: 20px;">
   <span style="display: inline-block; width: 100px;">Nombre</span>
@@ -330,33 +340,69 @@ function csv_get_data_settings_page() {
     else{
              
 // make pagination
-    $page = isset($_GET['cpage']) ? abs((int)$_GET['cpage' ]) : 1;
-    $limit = 15; // number of rows in page
-    $offset = ($page * $limit) - $limit;
-    $total = $wpdb->get_var("SELECT COUNT(`id`) FROM $table_name");
-    $num_of_pages = ceil($total / $limit);
-    $results = $wpdb->get_results( "SELECT * FROM $table_name LIMIT $offset, $limit" );
-    echo '<table class="wp-list-table widefat fixed striped posts" >';
-    echo '<thead>';
+$page = isset($_GET['cpage']) ? abs((int)$_GET['cpage' ]) : 1;
+$limit = 15; // number of rows in page
+$offset = ($page * $limit) - $limit;
+$total = $wpdb->get_var("SELECT COUNT(`id`) FROM $table_name");
+$num_of_pages = ceil($total / $limit);
+
+
+
+$results = $wpdb->get_results("SELECT * FROM $table_name LIMIT $offset, $limit");
+echo '<form method="post">';
+echo '<table class="wp-list-table widefat fixed striped posts" >';
+echo '<thead>';
+echo '<tr>';
+echo '<th class="manage-column column-title column-primary">Title</th>';
+echo '<th class="manage-column column-title column-primary">Locality</th>';
+echo '<th class="manage-column column-title column-primary">Address</th>';
+echo '<th class="manage-column column-title column-primary">Phone</th>';
+echo '<th class="manage-column column-title column-primary">Actions</th>';
+echo '<th class="manage-column column-cb check-column"><input type="checkbox" id="cb-select-all"/></th>';
+echo '</tr>';
+echo '</thead>';
+echo '<tbody>';
+foreach ($results as $result) {
     echo '<tr>';
-    echo '<th class="manage-column column-title column-primary">Title</th>';
-    echo '<th class="manage-column column-title column-primary">Locality</th>';
-    echo '<th class="manage-column column-title column-primary">Address</th>';
-    echo '<th class="manage-column column-title column-primary">Phone</th>';
-    echo '<th class="manage-column column-title column-primary">Actions</th>';
+    echo '<td class="manage-column column-title column-primary">' . $result->title . '</td>';
+    echo '<td class="manage-column column-title column-primary">' . $result->locality . '</td>';
+    echo '<td class="manage-column column-title column-primary">' . $result->address . '</td>';
+    echo '<td class="manage-column column-title column-primary">' . $result->phone . '</td>';
+    echo '<td class="manage-column column-title column-primary"><a href="?page=csv-get-data&action=edit&id=' . $result->id . '">Edit </a> </td>';
+    echo '<th class="check-column"><input type="checkbox" name="ids[]" value="' . $result->id . '"/></th>';
     echo '</tr>';
-    echo '</thead>';
-    echo '<tbody>';
-    foreach ($results as $result) {
-        echo '<tr>';
-        echo '<td class="manage-column column-title column-primary">' . $result->title . '</td>';
-        echo '<td class="manage-column column-title column-primary">' . $result->locality . '</td>';
-        echo '<td class="manage-column column-title column-primary">' . $result->address . '</td>';
-        echo '<td class="manage-column column-title column-primary">' . $result->phone . '</td>';
-        echo '<td class="manage-column column-title column-primary"><a href="?page=csv-get-data&action=edit&id=' . $result->id . '">Edit |</a> <a href="?page=csv-get-data&action=delete&id=' . $result->id . '">Delete</a></td>';
-        echo '</tr>';
+}
+echo '</tbody>';
+echo '</table>';
+echo '<p class="submit" style="text-align: right; margin-top: 5px;
+"><input type="submit" name="delete_selected" class="button" value="Delete Selected"/></p>';
+echo '</form>';
+// if the action is delete_selected then delete the data from the database 
+if (isset($_POST['delete_selected'])) {
+    $ids = $_POST['ids'];
+    foreach ($ids as $id) {
+        $wpdb->delete($table_name, array('id' => $id));
     }
-    // create next and previous button for pagination
+    echo '<script>alert("Data deleted successfully");</script>';
+   
+    echo '<script>window.location.href = "?page=csv-get-data";</script>';
+
+    
+
+
+}
+// add another input type submit to delete all data from the database
+echo '<form method="post">';
+echo '<p class="submit" style="text-align: right; margin-top: 5px;"><input type="submit" name="delete_all" class="button" value="Delete All"/></p>';
+echo '</form>';
+// if the action is delete_all then delete the data from the database
+if (isset($_POST['delete_all'])) {
+    $wpdb->query("TRUNCATE TABLE $table_name");
+    echo '<div class="updated"><p>All data deleted</p></div>';
+    echo '<script>window.location.href = "?page=csv-get-data";</script>';
+}
+
+// create next and previous button for pagination
     echo '</tbody>';
     echo '</table>';
     echo '<div class="tablenav bottom">';
@@ -376,7 +422,6 @@ function csv_get_data_settings_page() {
     echo '</div>';
 
     }
-   
 
 // if the action is delete then delete the data from the database
 if (isset($_GET['action']) && $_GET['action'] == 'delete') {
@@ -527,11 +572,11 @@ if (isset($_GET['action']) && $_GET['action'] === 'edit') {
 }
 
 // sortcode to replace the content with the data from the database
-function replace_shortcode( ) {
-    $title = get_the_title();
+function replace_shortcode( $atts ) {
+    $locality = $atts['locality'];
     global $wpdb;
     $table_name = $wpdb->prefix . 'csv_data_table';
-    $results = $wpdb->get_results( "SELECT * FROM $table_name WHERE Locality = '$title'" );
+    $results = $wpdb->get_results( "SELECT * FROM $table_name WHERE Locality = '$locality'" );
     $form = '';
     foreach ( $results as $result ) {
         $title = $result->title;
@@ -546,63 +591,60 @@ function replace_shortcode( ) {
         $hours = $result->hour;
         $Provincia = $result->Provincia;
       
-                    $form .= '<div class="csv-data" style="width: 85%;">';
-                    if (!empty($title)) {
-                        $form .= '<h3 style="margin: 0;">'.$title.'</h3>';
-                    }
-                    $form .= '<hr style="border: 1px solid">';
-                    $form .= '<div class="boxes" style="display:flex; justify-content: space-between  ;">';
-                    $form .= '<div class="box">';
-                    if(!empty($cord1) && !empty($cord2)){
+        $form .= '<div class="csv-data" style="width: 85%;">';
+        if (!empty($title)) {
+            $form .= '<h3 style="margin: 0;">'.$title.'</h3>';
+        }
+        $form .= '<hr style="border: 1px solid">';
+        $form .= '<div class="boxes" style="display:flex; justify-content: space-between  ;">';
+        $form .= '<div class="box">';
+        if(!empty($cord1) && !empty($cord2)){
 
-                        $form .= '<iframe class="gmap_iframe" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?q='.$cord1.','.$cord2.'&hl=es;z=14&amp;output=embed" style="height: 20rem;     width: 80%;"> </iframe>';
+            $form .= '<iframe class="gmap_iframe" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?q='.$cord1.','.$cord2.'&hl=es;z=14&amp;output=embed" style="height: 20rem;     width: 80%;"> </iframe>';
 
-                    }
-                  $form .= '</div>';
-                    $form .= '<div class="box">';
-                    if (!empty($locality)) {
-                        $form .= '<p><strong>Locality:</strong> ' . $locality . '</p>';
-                    }
-                    if (!empty($address)) {
-                        $form .= '<p><strong>Address:</strong> ' . $address . '</p>';
-                    }
-                    if (!empty($phone)) {
-                        $form .= '<p><strong>Phone:</strong> ' . $phone . '</p>';
-                    }
-                    if (!empty($phone)) {
-                        $form .= '<p><strong>hours:</strong> ' . $hours . '</p>';
-                    }
-                    if (!empty($Provincia)) {
-                        $form .= '<p><strong>Provincia:</strong> ' . $Provincia . '</p>';
-                    }
-                    $form .= '</div>';
-                    $form .= '</div>';
-                    $form .= '<br>';
-                    $form .= '<div class="content">';
-                    if (!empty($description)) {
-                        $form .= '<p>'.$description.'</p>';
-                    }
-                    $form .= '</div>';
-                    $form .= '<div class="button" style="text-align: center;">';
-                    if (!empty($link1)) {
-                        $form .= '<button style="background-color: rgb(13, 157, 235) ; border: none; padding: 10px 30px; color: white; border-radius: 30px;
-                        width: 50%;">';
-                        $form .= '<a href="'.$link1.'">link1</a>';
-                        $form .= '</button>';
-                    }
-                    $form .= '</div>';
-                    $form .= '<div class="button" style="text-align: center; margin-top:15px;">';
-                    if (!empty($link2)) {
-                        $form .= '<button style="background-color: rgb(13, 157, 235) ; border: none; padding: 10px 30px; color: white; border-radius: 30px;
-                        width: 25%;">';
-                        $form .= '<a href="'.$link2.'">link2</a>';
-                        $form .= '</button>';
-                    }
-                    $form .= '</div>';
-                    $form .= '</div>';
-
-                        
-                        
+        }
+      $form .= '</div>';
+        $form .= '<div class="box">';
+        if (!empty($locality)) {
+            $form .= '<p><strong>Locality:</strong> ' . $locality . '</p>';
+        }
+        if (!empty($address)) {
+            $form .= '<p><strong>Address:</strong> ' . $address . '</p>';
+        }
+        if (!empty($phone)) {
+            $form .= '<p><strong>Phone:</strong> ' . $phone . '</p>';
+        }
+        if (!empty($phone)) {
+            $form .= '<p><strong>hours:</strong> ' . $hours . '</p>';
+        }
+        if (!empty($Provincia)) {
+            $form .= '<p><strong>Provincia:</strong> ' . $Provincia . '</p>';
+        }
+        $form .= '</div>';
+        $form .= '</div>';
+        $form .= '<br>';
+        $form .= '<div class="content">';
+        if (!empty($description)) {
+            $form .= '<p>'.$description.'</p>';
+        }
+        $form .= '</div>';
+        $form .= '<div class="button" style="text-align: center;">';
+        if (!empty($link1)) {
+            $form .= '<button style="background-color: rgb(13, 157, 235) ; border: none; padding: 10px 30px; color: white; border-radius: 30px;
+            width: 50%;">';
+            $form .= '<a href="'.$link1.'">link1</a>';
+            $form .= '</button>';
+        }
+        $form .= '</div>';
+        $form .= '<div class="button" style="text-align: center; margin-top:15px;">';
+        if (!empty($link2)) {
+            $form .= '<button style="background-color: rgb(13, 157, 235) ; border: none; padding: 10px 30px; color: white; border-radius: 30px;
+            width: 25%;">';
+            $form .= '<a href="'.$link2.'">link2</a>';
+            $form .= '</button>';
+        }
+        $form .= '</div>';
+        $form .= '</div>';
 
     }
     return $form;
@@ -610,13 +652,25 @@ function replace_shortcode( ) {
 add_shortcode( 'replace', 'replace_shortcode' );
 
 function csv_get_data_replace_content( $content ) {
-    if ( strpos( $content, '[csvnull]' ) !== false ) {
-        $form = do_shortcode( '[replace]' );
-        $content = str_replace( '[csvnull]', $form, $content );
+    preg_match_all('/\[(.*?)\]/', $content, $matches, PREG_SET_ORDER);
+    foreach ($matches as $match) {
+        $shortcode = $match[0];
+        $locality = $match[1];
+        if ($shortcode == "[$locality]") {
+            global $wpdb;
+            $table_name = $wpdb->prefix . 'csv_data_table';
+            $results = $wpdb->get_results( "SELECT * FROM $table_name WHERE Locality = '$locality'" );
+            if ( count($results) > 0 ) {
+                $form = do_shortcode( "[replace locality=\"$locality\"]" );
+                $content = str_replace( $shortcode, $form, $content );
+            }
+        }
     }
     return $content;
 }
 add_filter( 'the_content', 'csv_get_data_replace_content' );
+
+
 
 // delete everything happend by this plugin when the plugin is deleted
 function csv_delete_plugin() {
@@ -628,5 +682,10 @@ function csv_delete_plugin() {
 }
 register_uninstall_hook( __FILE__, 'csv_delete_plugin' );
 
+
+
+//////////// 
+
 ?>
+
 
