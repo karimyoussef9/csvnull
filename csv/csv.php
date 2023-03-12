@@ -457,7 +457,7 @@ if($wpdb->get_var("SELECT COUNT(*) FROM $table_name") == 0){
   </form>
 </div>
 
-<p style="font-size: 16px; font-weight: bold; margin-bottom: 5px;">ShortCode: [Locality]</p>
+<p style="font-size: 16px; font-weight: bold; margin-bottom: 5px;">ShortCode: [CSV Locality limit]</p>
 <p style="font-size: 16px; font-weight: bold; margin-bottom: 5px;">Column Names:</p>
 <p style="font-size: 14px; line-height: 1.4; margin-bottom: 20px;">
   <span style="display: inline-block; width: 100px;">Nombre</span>
