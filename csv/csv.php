@@ -943,11 +943,9 @@ if(isset($resultss->Provincia)){
     return $form;
 }
 add_shortcode( 'replace', 'replace_shortcode' );
-
 function csv_get_data_replace_content( $content ) {
-    preg_match_all('/\[CSV\s+([^\s]+)(?:\s+(\d+))?\]/', $content, $matches, PREG_SET_ORDER);
+    preg_match_all('/\[CSV\s+([\w\s]+?)(?:\s+(\d+))?\]/', $content, $matches, PREG_SET_ORDER);
    
-//    $limit = null;
     $limit = 20;
   
     foreach ($matches as $match) {
@@ -959,6 +957,8 @@ function csv_get_data_replace_content( $content ) {
         } else {
             $locality = $match[1];
         }
+        $locality = str_replace('-', ' ', $locality); // Replace hyphens with spaces
+        $locality = ucwords($locality); // Capitalize the first letter of each word
         global $wpdb;
         $table_name = $wpdb->prefix . 'csv_data_table';
         $query = "SELECT * FROM $table_name WHERE Locality = '$locality'";
@@ -973,6 +973,10 @@ function csv_get_data_replace_content( $content ) {
     }
     return $content;
 }
+
+
+
+
 
 
 add_filter( 'the_content', 'csv_get_data_replace_content' );
