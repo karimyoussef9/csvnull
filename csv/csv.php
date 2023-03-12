@@ -42,10 +42,225 @@ $sql = "CREATE TABLE $table_name (
 ) $charset_collate;";
 require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 dbDelta( $sql );
+// create table in database called csv_data_table2
+global $wpdb;
+$charset_collate = $wpdb->get_charset_collate();
+$table_name = $wpdb->prefix . 'csv_data_table2';
+$sql = "CREATE TABLE $table_name (
+    id mediumint(9) NOT NULL AUTO_INCREMENT,
+    title text NOT NULL,
+    locality text NOT NULL,
+    address text NOT NULL,
+    phone text NOT NULL,
+    cordi1 decimal(11,8) NOT NULL,
+    cordi2 decimal(11,8) NOT NULL,
+    link1 text null,
+    link2 text null,
+    despcription text null,
+    hour text null,
+    Provincia text null,
+    UNIQUE KEY id (id)
+) $charset_collate;";
+require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+dbDelta( $sql );
+
 
 // Display the settings page form
 function csv_upload_replace_settings_page() {
-    if (isset($_POST['submit'])) {
+// if the action is edit then display form to update title, locality, address, phone , cord1, cord2, link1, link2, desc, hours, Provinciain the database table csv_data_table2
+if (isset($_GET['action']) && $_GET['action'] == 'edit') {
+    // get the data from the database table csv_data_table2
+    echo '<style>body{overflow: hidden;}</style>';
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'csv_data_table2';
+      $results = $wpdb->get_row("SELECT * FROM $table_name where id = 1");
+      $title = $results->title;
+        $locality = $results->locality;
+        $address = $results->address;
+        $phone = $results->phone;
+        $cordi1 = $results->cordi1;
+        $cordi2 = $results->cordi2;
+        $link1 = $results->link1;
+        $link2 = $results->link2;
+        $description = $results->despcription;
+        $hours = $results->hour;
+        $Provincia = $results->Provincia;
+        
+      
+    
+  ?>
+<div class="defult" style="position:fixed; height: 50vh; height: 95%; top: 5%; padding: 20px; background-color:#f6f7f7; ">
+    <h2 style="color: black;">Edit Data</h2>
+    <a href="?page=csv-upload-replace"
+        style="position: absolute; top: 20px; right: 12%; color: black; font-size: 20px; text-decoration: none;">X</a>
+
+    <form method="post" style="color: black; display: flex; justify-content: space-between; flex-wrap: wrap; "
+        action="?page=csv-upload-replace&action=edit">
+        <div class="box1" style="flex-basis: 50%;">
+            <div class="box" style="padding-bottom: 15px;">
+                <label for="title">Title:</label>
+                <br>
+                <input type="text" name="title" style=" margin-top: 5px; width: 80%;" id="title"
+                    value="<?php if(isset($title)){
+                        echo $title;}?>">
+            </div>
+            <div class="box" style="padding-bottom: 15px;">
+                <label for="locality">Locality:</label>
+                <br>
+                <input type="text" name="locality" style=" margin-top: 5px; width: 80%;" id="locality"
+                    value="<?php if(isset($locality)){
+                        echo $locality;}?>">
+            </div>
+            <div class="box" style="padding-bottom: 15px;">
+                <label for="address">Address:</label>
+                <br>
+                <input type="text" name="address" style=" margin-top: 5px; width: 80%;" id="address"
+                    value="<?php if(isset($address)){
+                        echo $address;}?>">
+            </div>
+            <div class="box" style="padding-bottom: 15px;">
+                <label for="link1">Link1:</label>
+                <br>
+                <input type="text" name="link1" style=" margin-top: 5px; width: 80%;" id="cordi2"
+                    value="<?php if(isset($link1)){
+                        echo $link1;}?>">
+            </div>
+            <div class="box" style="padding-bottom: 15px;">
+                <label for="Provincia">Provincia:</label>
+                <br>
+                <input type="text" name="Provincia" style=" margin-top: 5px; width: 80%;" id="cordi2"
+                    value="<?php if(isset($Provincia)){
+                        echo $Provincia;}?>">
+            </div>
+        </div>
+        <div class="box2" style="flex-basis: 50%;">
+            <div class="box" style="padding-bottom: 15px;">
+                <label for="phone">Phone:</label>
+                <br>
+                <input type="text" name="phone" style=" margin-top: 5px; width: 80%;" id="phone"
+                    value="<?php if(isset($phone)){
+                        echo $phone;}?>">
+            </div>
+            <div class="box" style="padding-bottom: 15px;">
+                <label for="cordi1">Cordi1:</label>
+                <br>
+                <input type="text" name="cordi1" style=" margin-top: 5px; width: 80%;" id="cordi1"
+                    value="<?php if(isset($cordi1)){
+                        echo $cordi1;}?>">
+            </div>
+            <div class="box" style="padding-bottom: 15px;">
+                <label for="cordi2">Cordi2:</label>
+                <br>
+                <input type="text" name="cordi2" style=" margin-top: 5px; width: 80%;" id="cordi2"
+                    value="<?php if(isset($cordi2)){
+                        echo $cordi2;}?>">
+            </div>
+
+            <div class="box" style="padding-bottom: 15px;">
+                <label for="link2">Link2:</label>
+                <br>
+                <input type="text" name="link2" style=" margin-top: 5px; width: 80%;" id="cordi2"
+                    value="<?php if(isset($link2)){
+                        echo $link2;}?>">
+            </div>
+            <div class="box" style="padding-bottom: 15px;">
+                <label for="hours">hours:</label>
+                <br>
+                <input type="text" name="hours" style=" margin-top: 5px; width: 80%;" id="cordi2"
+                    value="<?php if(isset($hours)){
+                        echo $hours;}?>">
+            </div>
+            
+        </div>
+        <div class="box3" style="flex-basis: 100%;">
+            <div class="box" style="padding-bottom: 15px;">
+                <label for="description">Description:</label>
+                <br>
+                <textarea name="description" id="" cols="95" rows="5"><?php if(isset($description)){
+                        echo $description;}?></textarea>
+            </div>
+        </div>
+        <br>
+
+        <input type="submit" name="submit" value="Update"
+            style="background-color: rgb(13, 157, 235) ; border: none; padding: 10px 30px; color: white; border-radius: 5px;">
+    </form>
+
+</div>
+
+
+
+  <?php
+    // if the submit button is clicked then update the data in the database table csv_data_table2
+    if (isset($_POST['submit']) && $_POST['submit'] == 'Update') {
+        // UPDATE FORM data in the database
+        $title = $_POST['title'];
+        $locality = $_POST['locality'];
+        $address = $_POST['address'];
+        $phone = $_POST['phone'];
+        $cordi1 = $_POST['cordi1'];
+        $cordi2 = $_POST['cordi2'];
+        $link1 = $_POST['link1'];
+        $link2 = $_POST['link2'];
+        $description = $_POST['description'];
+        $Provincia = $_POST['Provincia'];
+        $hours = $_POST['hours'];
+    
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'csv_data_table2';
+        // if there is no data in the database then insert the data
+if($wpdb->get_var("SELECT COUNT(*) FROM $table_name") == 0){
+    $wpdb->insert(
+        $table_name,
+        array(
+            'title' => $title,
+            'locality' => $locality,
+            'address' => $address,
+            'phone' => $phone,
+            'Cordi1' => $cordi1,
+            'Cordi2' => $cordi2,
+            'Link1' => $link1,
+            'Link2' => $link2,
+            'despcription' => $description,
+            'Provincia' => $Provincia,
+            'hour' => $hours,
+        )
+    );
+}else{
+    $wpdb->update(
+        $table_name,
+        array(
+            'title' => $title,
+            'locality' => $locality,
+            'address' => $address,
+            'phone' => $phone,
+            'Cordi1' => $cordi1,
+            'Cordi2' => $cordi2,
+            'Link1' => $link1,
+            'Link2' => $link2,
+            'despcription' => $description,
+            'Provincia' => $Provincia,
+            'hour' => $hours,
+        ),
+        array( 'id' => 1 ) 
+    );
+}
+
+// refresh the page now
+        echo '<script>location.reload();</script>';
+
+
+      
+    }
+    
+  
+          
+    
+  
+
+}
+
+    if (isset($_POST['submit']) && $_POST['submit'] != 'Update') {
         $file = $_FILES['csv-file'];
         if ($file['type'] !== 'text/csv') {
             echo '<div class="error"><p>Invalid file type. Please upload a CSV file.</p></div>';
@@ -237,6 +452,8 @@ function csv_upload_replace_settings_page() {
     <label for="csv-file" style="margin-bottom: 10px;">CSV File:</label>
     <input type="file" name="csv-file" id="csv-file" style="padding: 10px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px;">
     <input type="submit" name="submit" value="Upload" style="padding: 10px; background-color: #4CAF50; color: #fff; border: none; border-radius: 5px; cursor: pointer;">
+    <?php echo '<a href="?page=csv-upload-replace&action=edit" style="margin-top:30px;">Edit defult data </a>';
+?>
   </form>
 </div>
 
@@ -567,16 +784,20 @@ if (isset($_GET['action']) && $_GET['action'] === 'edit') {
 
     ), array( 'id' => $id ) );
 }
-// button to add the data in the database
 
 }
 
 // sortcode to replace the content with the data from the database
 function replace_shortcode( $atts ) {
     $locality = $atts['locality'];
+    $limit = isset( $atts['limit'] ) ? intval( $atts['limit'] ) : -1; // default value is -1 which means no limit
     global $wpdb;
     $table_name = $wpdb->prefix . 'csv_data_table';
-    $results = $wpdb->get_results( "SELECT * FROM $table_name WHERE Locality = '$locality'" );
+    $query = "SELECT * FROM $table_name WHERE Locality = '$locality'";
+    if ( $limit > 0 ) {
+        $query .= " LIMIT $limit";
+    }
+    $results = $wpdb->get_results( $query );
     $form = '';
     foreach ( $results as $result ) {
         $title = $result->title;
@@ -590,10 +811,56 @@ function replace_shortcode( $atts ) {
         $link2 = $result->link2;
         $hours = $result->hour;
         $Provincia = $result->Provincia;
+        ///// static data
+        $table_name = $wpdb->prefix . 'csv_data_table2';
+        $resultss = $wpdb->get_row("SELECT * FROM $table_name where id = 1");
+
       
+if(isset($resultss->title)){
+    $titles = $resultss->title;
+}
+if(isset($resultss->locality)){
+    $localitys = $resultss->locality;
+}
+if(isset($resultss->address)){
+    $addresss = $resultss->address;
+}
+if(isset($resultss->phone)){
+    $phones = $resultss->phone;
+}
+if(isset($resultss->cordi1)){
+    $cord1s = $resultss->cordi1;
+}
+if(isset($resultss->cordi2)){
+    $cord2s = $resultss->cordi2;
+}
+if(isset($resultss->despcription)){
+    $descriptions = $resultss->despcription;
+}
+if(isset($resultss->link1)){
+    $link1s = $resultss->link1;
+}
+if(isset($resultss->link2)){
+    $link2s = $resultss->link2;
+}
+if(isset($resultss->hour)){
+    $hourss = $resultss->hour;
+}
+if(isset($resultss->Provincia)){
+    $Provincias = $resultss->Provincia;
+}
+
+
+
+
+
+
+
         $form .= '<div class="csv-data" style="width: 85%;">';
         if (!empty($title)) {
             $form .= '<h3 style="margin: 0;">'.$title.'</h3>';
+        }elseif(!empty($titles)&& empty($title)){
+            $form .= '<h3 style="margin: 0;">'.$titles.'</h3>';
         }
         $form .= '<hr style="border: 1px solid">';
         $form .= '<div class="boxes" style="display:flex; justify-content: space-between  ;">';
@@ -602,23 +869,35 @@ function replace_shortcode( $atts ) {
 
             $form .= '<iframe class="gmap_iframe" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?q='.$cord1.','.$cord2.'&hl=es;z=14&amp;output=embed" style="height: 20rem;     width: 80%;"> </iframe>';
 
+        }elseif(!empty($cord1s) && !empty($cord2s) && empty($cord1) && empty($cord2)){
+            $form .= '<iframe class="gmap_iframe" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?q='.$cord1s.','.$cord2s.'&hl=es;z=14&amp;output=embed" style="height: 20rem;     width: 80%;"> </iframe>';
         }
       $form .= '</div>';
         $form .= '<div class="box">';
         if (!empty($locality)) {
             $form .= '<p><strong>Locality:</strong> ' . $locality . '</p>';
+        }elseif(!empty($localitys)&& empty($locality)){
+            $form .= '<p><strong>Locality:</strong> ' . $localitys . '</p>';
         }
         if (!empty($address)) {
             $form .= '<p><strong>Address:</strong> ' . $address . '</p>';
+        }elseif(!empty($addresss)&& empty($address)){
+            $form .= '<p><strong>Address:</strong> ' . $addresss . '</p>';
         }
         if (!empty($phone)) {
             $form .= '<p><strong>Phone:</strong> ' . $phone . '</p>';
+        }elseif(!empty($phones)&& empty($phone)){
+            $form .= '<p><strong>Phone:</strong> ' . $phones . '</p>';
         }
-        if (!empty($phone)) {
+        if (!empty($hours)) {
             $form .= '<p><strong>hours:</strong> ' . $hours . '</p>';
+        }elseif(!empty($hourss)&& empty($hours)){
+            $form .= '<p><strong>hours:</strong> ' . $hourss . '</p>';
         }
         if (!empty($Provincia)) {
             $form .= '<p><strong>Provincia:</strong> ' . $Provincia . '</p>';
+        }elseif(!empty($Provincias)&& empty($Provincia)){
+            $form .= '<p><strong>Provincia:</strong> ' . $Provincias . '</p>';
         }
         $form .= '</div>';
         $form .= '</div>';
@@ -626,6 +905,8 @@ function replace_shortcode( $atts ) {
         $form .= '<div class="content">';
         if (!empty($description)) {
             $form .= '<p>'.$description.'</p>';
+        }elseif(!empty($descriptions)&& empty($description)){
+            $form .= '<p>'.$descriptions.'</p>';
         }
         $form .= '</div>';
         $form .= '<div class="button" style="text-align: center;">';
@@ -633,6 +914,11 @@ function replace_shortcode( $atts ) {
             $form .= '<button style="background-color: rgb(13, 157, 235) ; border: none; padding: 10px 30px; color: white; border-radius: 30px;
             width: 50%;">';
             $form .= '<a href="'.$link1.'">link1</a>';
+            $form .= '</button>';
+        }elseif(!empty($link1s)&& empty($link1)){
+            $form .= '<button style="background-color: rgb(13, 157, 235) ; border: none; padding: 10px 30px; color: white; border-radius: 30px;
+            width: 50%;">';
+            $form .= '<a href="'.$link1s.'">link1</a>';
             $form .= '</button>';
         }
         $form .= '</div>';
@@ -642,9 +928,16 @@ function replace_shortcode( $atts ) {
             width: 25%;">';
             $form .= '<a href="'.$link2.'">link2</a>';
             $form .= '</button>';
+        }elseif(!empty($link2s)&& empty($link2)){
+            $form .= '<button style="background-color: rgb(13, 157, 235) ; border: none; padding: 10px 30px; color: white; border-radius: 30px;
+            width: 25%;">';
+            $form .= '<a href="'.$link2s.'">link2</a>';
+            $form .= '</button>';
         }
         $form .= '</div>';
         $form .= '</div>';
+
+
 
     }
     return $form;
@@ -652,22 +945,36 @@ function replace_shortcode( $atts ) {
 add_shortcode( 'replace', 'replace_shortcode' );
 
 function csv_get_data_replace_content( $content ) {
-    preg_match_all('/\[(.*?)\]/', $content, $matches, PREG_SET_ORDER);
+    preg_match_all('/\[CSV\s+([^\s]+)(?:\s+(\d+))?\]/', $content, $matches, PREG_SET_ORDER);
+   
+//    $limit = null;
+    $limit = 20;
+  
     foreach ($matches as $match) {
-        $shortcode = $match[0];
-        $locality = $match[1];
-        if ($shortcode == "[$locality]") {
-            global $wpdb;
-            $table_name = $wpdb->prefix . 'csv_data_table';
-            $results = $wpdb->get_results( "SELECT * FROM $table_name WHERE Locality = '$locality'" );
-            if ( count($results) > 0 ) {
-                $form = do_shortcode( "[replace locality=\"$locality\"]" );
-                $content = str_replace( $shortcode, $form, $content );
-            }
+        $shortcode = $match[0]; 
+        if ( isset($match[2]) ) {
+            $locality = $match[1];
+            $limit = $match[2];
+
+        } else {
+            $locality = $match[1];
+        }
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'csv_data_table';
+        $query = "SELECT * FROM $table_name WHERE Locality = '$locality'";
+        if ( $limit > 0 ) {
+            $query .= " LIMIT $limit";
+        }
+        $results = $wpdb->get_results( $query );
+        if ( count($results) > 0 ) {
+            $form = do_shortcode( "[replace locality=\"$locality\" " . (isset($limit) ? "limit=\"$limit\"" : "") . "]" );
+            $content = str_replace( $shortcode, $form, $content );
         }
     }
     return $content;
 }
+
+
 add_filter( 'the_content', 'csv_get_data_replace_content' );
 
 
@@ -687,5 +994,3 @@ register_uninstall_hook( __FILE__, 'csv_delete_plugin' );
 //////////// 
 
 ?>
-
-
