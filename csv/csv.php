@@ -891,13 +891,13 @@ if(isset($resultss->Provincia)){
         $form .= '<div class="box">';
         if(!empty($cord1) && !empty($cord2)){
 
-            $form .= '<iframe class="gmap_iframe" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?q='.$cord1.','.$cord2.'&hl=es;z=14&amp;output=embed" style="height: 20rem;     width: 80%;"> </iframe>';
+            $form .= '<iframe class="gmap_iframe" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?q='.$cord1.','.$cord2.'&hl=es;z=14&amp;output=embed" style="height: 20rem;"> </iframe>';
 
         }elseif(!empty($cord1s) && !empty($cord2s) && empty($cord1) && empty($cord2)){
-            $form .= '<iframe class="gmap_iframe" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?q='.$cord1s.','.$cord2s.'&hl=es;z=14&amp;output=embed" style="height: 20rem;     width: 80%;"> </iframe>';
+            $form .= '<iframe class="gmap_iframe" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?q='.$cord1s.','.$cord2s.'&hl=es;z=14&amp;output=embed" style="height: 20rem;"> </iframe>';
         }
       $form .= '</div>';
-        $form .= '<div class="box">';
+        $form .= '<div class="box" style="width: 50%; font-size: small;">';
         if (!empty($locality)) {
             $form .= '<p><strong>Locality:</strong> ' . $locality . '</p>';
         }elseif(!empty($localitys)&& empty($locality)){
@@ -926,7 +926,7 @@ if(isset($resultss->Provincia)){
         $form .= '</div>';
         $form .= '</div>';
         $form .= '<br>';
-        $form .= '<div class="content">';
+        $form .= '<div class="content" style="font-size: small;">';
         if (!empty($description)) {
             $form .= '<p>'.$description.'</p>';
         }elseif(!empty($descriptions)&& empty($description)){
@@ -936,13 +936,13 @@ if(isset($resultss->Provincia)){
         $form .= '<div class="button" style="text-align: center;">';
         if (!empty($link1)) {
             $form .= '<button style="background-color: rgb(13, 157, 235) ; border: none; padding: 10px 30px; color: white; border-radius: 30px;
-            width: 50%;">';
-            $form .= '<a href="'.$link1.'">link1</a>';
+            width: 25%;">';
+            $form .= '<a href="'.$link1.'"  style="text-decoration:none;">link1</a>';
             $form .= '</button>';
         }elseif(!empty($link1s)&& empty($link1)){
             $form .= '<button style="background-color: rgb(13, 157, 235) ; border: none; padding: 10px 30px; color: white; border-radius: 30px;
-            width: 50%;">';
-            $form .= '<a href="'.$link1s.'">link1</a>';
+            width: 25%;">';
+            $form .= '<a href="'.$link1s.'"  style="text-decoration:none;">link1</a>';
             $form .= '</button>';
         }
         $form .= '</div>';
@@ -950,12 +950,12 @@ if(isset($resultss->Provincia)){
         if (!empty($link2)) {
             $form .= '<button style="background-color: rgb(13, 157, 235) ; border: none; padding: 10px 30px; color: white; border-radius: 30px;
             width: 25%;">';
-            $form .= '<a href="'.$link2.'">link2</a>';
+            $form .= '<a  href="'.$link2.'" style="text-decoration:none;">link2</a>';
             $form .= '</button>';
         }elseif(!empty($link2s)&& empty($link2)){
             $form .= '<button style="background-color: rgb(13, 157, 235) ; border: none; padding: 10px 30px; color: white; border-radius: 30px;
             width: 25%;">';
-            $form .= '<a href="'.$link2s.'">link2</a>';
+            $form .= '<a  href="'.$link2s.'" style="text-decoration:none;">link2</a>';
             $form .= '</button>';
         }
         $form .= '</div>';
