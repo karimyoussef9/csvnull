@@ -785,6 +785,14 @@ if (isset($_GET['action']) && $_GET['action'] === 'edit') {
     $link2 = $_POST['link2'];
     $hours = $_POST['hours'];
     $Provincia = $_POST['Provincia'];
+    // if link1 does't have http:// or https:// then add it
+    if (strpos($link1, 'http://') === false && strpos($link1, 'https://') === false && $link1 != '') {
+        $link1 = 'https://' . $link1;
+    }
+    // if link2 does't have http:// or https:// then add it
+    if (strpos($link2, 'http://') === false && strpos($link2, 'https://') === false && $link2 != '') {
+        $link2 = 'https://' . $link2;
+    }
     $wpdb->update( $table_name, array(
         'title' => $title,
         'locality' => $locality,
