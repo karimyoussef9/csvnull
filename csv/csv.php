@@ -206,11 +206,11 @@ if (isset($_GET['action']) && $_GET['action'] == 'edit') {
         $Provincia = $_POST['Provincia'];
         $hours = $_POST['hours'];
         // if the link1 does not contain http:// or https:// then add http:// to the link1
-        if (strpos($link1, 'http://') === false && strpos($link1, 'https://') === false) {
+        if (strpos($link1, 'http://') === false && strpos($link1, 'https://') === false && !empty($link1) ) {
             $link1 = 'https://' . $link1;
         }
         // if the link2 does not contain http:// or https:// then add http:// to the link2
-        if (strpos($link2, 'http://') === false && strpos($link2, 'https://') === false) {
+        if (strpos($link2, 'http://') === false && strpos($link2, 'https://') === false && !empty($link2)) {
             $link2 = 'https://' . $link2;
         }
     
@@ -397,11 +397,11 @@ if($wpdb->get_var("SELECT COUNT(*) FROM $table_name") == 0){
     
             }
             // if the link1 does't contain http:// or https:// add it
-            if(!preg_match("/^(http|https):\/\//", $csv_link1[$i])){
+            if(!preg_match("/^(http|https):\/\//", $csv_link1[$i])&& !empty($csv_link1[$i])){
                 $csv_link1[$i] = 'https://'.$csv_link1[$i];
             }
             // if the link2 does't contain http:// or https:// add it
-            if(!preg_match("/^(http|https):\/\//", $csv_link2[$i])){
+            if(!preg_match("/^(http|https):\/\//", $csv_link2[$i])&& !empty($csv_link2[$i])){
                 $csv_link2[$i] = 'https://'.$csv_link2[$i];
             }
 
