@@ -896,32 +896,32 @@ if(isset($resultss->Provincia)){
         }elseif(!empty($cord1s) && !empty($cord2s) && empty($cord1) && empty($cord2)){
             $form .= '<iframe class="gmap_iframe" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?q='.$cord1s.','.$cord2s.'&hl=es;z=14&amp;output=embed" style="height: 20rem;"> </iframe>';
         }
-      $form .= '</div>';
+        $form .= '</div>';
         $form .= '<div class="box" style="width: 50%; font-size: small;">';
         if (!empty($locality)) {
-            $form .= '<p><strong>Locality:</strong> ' . $locality . '</p>';
+            $form .= '<p><strong>🚩 locality:</strong> ' . $locality . '</p>';
         }elseif(!empty($localitys)&& empty($locality)){
-            $form .= '<p><strong>Locality:</strong> ' . $localitys . '</p>';
+            $form .= '<p><strong>🚩 locality:</strong> ' . $localitys . '</p>';
         }
         if (!empty($address)) {
-            $form .= '<p><strong>Address:</strong> ' . $address . '</p>';
+            $form .= '<p><strong>🚩 Dirección del Centro:</strong> ' . $address . '</p>';
         }elseif(!empty($addresss)&& empty($address)){
-            $form .= '<p><strong>Address:</strong> ' . $addresss . '</p>';
+            $form .= '<p><strong>🚩 Dirección del Centro:</strong> ' . $addresss . '</p>';
         }
         if (!empty($phone)) {
-            $form .= '<p><strong>Phone:</strong> ' . $phone . '</p>';
+            $form .= '<p><strong>📞 Teléfono del Centro:</strong> ' . $phone . '</p>';
         }elseif(!empty($phones)&& empty($phone)){
-            $form .= '<p><strong>Phone:</strong> ' . $phones . '</p>';
+            $form .= '<p><strong>📞 Teléfono del Centro:</strong> ' . $phones . '</p>';
         }
         if (!empty($hours)) {
-            $form .= '<p><strong>hours:</strong> ' . $hours . '</p>';
+            $form .= '<p><strong>🕛 Horario del Centro:</strong> ' . $hours . '</p>';
         }elseif(!empty($hourss)&& empty($hours)){
-            $form .= '<p><strong>hours:</strong> ' . $hourss . '</p>';
+            $form .= '<p><strong>🕛 Horario del Centro:</strong> ' . $hourss . '</p>';
         }
         if (!empty($Provincia)) {
-            $form .= '<p><strong>Provincia:</strong> ' . $Provincia . '</p>';
+            $form .= '<p><strong>🚩 Provincia:</strong> ' . $Provincia . '</p>';
         }elseif(!empty($Provincias)&& empty($Provincia)){
-            $form .= '<p><strong>Provincia:</strong> ' . $Provincias . '</p>';
+            $form .= '<p><strong>🚩 Provincia:</strong> ' . $Provincias . '</p>';
         }
         $form .= '</div>';
         $form .= '</div>';
@@ -935,28 +935,28 @@ if(isset($resultss->Provincia)){
         $form .= '</div>';
         $form .= '<div class="button" style="text-align: center;">';
         if (!empty($link1)) {
-            $form .= '<button style="background-color: rgb(13, 157, 235) ; border: none; padding: 10px 30px; color: white; border-radius: 30px;
-            width: 25%;">';
-            $form .= '<a href="'.$link1.'"  style="text-decoration:none;">link1</a>';
-            $form .= '</button>';
+            $form .= '<a href="'.$link1.'"  style="text-decoration:none;">';
+            $form .= '<button style="background-color: #ffcb00 ; cursor: pointer; border: none; padding: 10px 30px; font-weight: 900; border-radius: 30px; color:black; 
+            ">🔍 Comprueba las coberturas de tu plan</button>';
+            $form .= '</a>';
         }elseif(!empty($link1s)&& empty($link1)){
-            $form .= '<button style="background-color: rgb(13, 157, 235) ; border: none; padding: 10px 30px; color: white; border-radius: 30px;
-            width: 25%;">';
-            $form .= '<a href="'.$link1s.'"  style="text-decoration:none;">link1</a>';
-            $form .= '</button>';
+            $form .= '<a href="'.$link1.'"  style="text-decoration:none;">';
+            $form .= '<button style="background-color: #ffcb00 ; cursor: pointer; border: none; padding: 10px 30px; font-weight: 900; border-radius: 30px; color:black; 
+            ">🔍 Comprueba las coberturas de tu plan</button>';
+            $form .= '</a>';
         }
         $form .= '</div>';
         $form .= '<div class="button" style="text-align: center; margin-top:15px;">';
         if (!empty($link2)) {
-            $form .= '<button style="background-color: rgb(13, 157, 235) ; border: none; padding: 10px 30px; color: white; border-radius: 30px;
-            width: 25%;">';
-            $form .= '<a  href="'.$link2.'" style="text-decoration:none;">link2</a>';
-            $form .= '</button>';
+            $form .= '<a href="'.$link2s.'"  style="text-decoration:none;">';
+            $form .= '<button style="background-color: #ff5757; cursor: pointer; border: none; padding: 10px 30px; color: white; font-weight: 900; border-radius: 30px;
+            ">🗓️ Pide una cita</button>';
+            $form .= '</a>';
         }elseif(!empty($link2s)&& empty($link2)){
-            $form .= '<button style="background-color: rgb(13, 157, 235) ; border: none; padding: 10px 30px; color: white; border-radius: 30px;
-            width: 25%;">';
-            $form .= '<a  href="'.$link2s.'" style="text-decoration:none;">link2</a>';
-            $form .= '</button>';
+            $form .= '<a href="'.$link2s.'"  style="text-decoration:none;">';
+            $form .= '<button style="background-color: #ff5757 ; cursor: pointer; border: none; padding: 10px 30px; color: white; font-weight: 900; border-radius: 30px;
+            ">🗓️ Pide una cita</button>';
+            $form .= '</a>';
         }
         $form .= '</div>';
         $form .= '</div>';
